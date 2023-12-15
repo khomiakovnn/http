@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Server</title>
+</head>
+<body>
+
+<script>
+
+const serverUrl = 'http://localhost:8888';
+
+fetch(`${serverUrl}/?method=allTickets`)
+    .then(response => response.json())
+    .then(data => {
+        console.log('Список тикетов:', data);
+    })
+    .catch(error => console.error('Ошибка при получении тикетов:', error));
+
+const ticketId = 1; 
+fetch(`${serverUrl}/?method=ticketById&id=${ticketId}`)
+    .then(response => response.json())
+    .then(data => {
+        console.log(`Тикет с id ${ticketId}:`, data);
+    })
+    .catch(error => console.error(`Ошибка при получении тикета с id ${ticketId}:`, error));
+
+const newTicket = {
+    name: 'Новый тикет',
+    description: 'Описание нового тикета',
+    status: false,
+};
+
+fetch(`${serverUrl}/?method=createTicket`, {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(newTicket),
+})
+    .then(response => response.json())
+    .then(data => {
+        console.log('Новый тикет создан:', data);
+    })
+    .catch(error => console.error('Ошибка при создании нового тикета:', error));
+</script>
+
+</body>
+</html>
