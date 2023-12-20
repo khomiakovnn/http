@@ -10,17 +10,17 @@ const tickets = [];
 
 tickets.push({
     id: 1,
-    name: 'Ticket 1',
+    name: 'Поменять картридж в принтере',
     status: false,
     created: Date.now(),
-    description: 'Description for Ticket 1',
+    description: 'Полное описание тикета - поменять карридж в принтере на втором этаже',
 });
 tickets.push({
     id: 2,
-    name: 'Ticket 2',
+    name: 'Полить цветы',
     status: true,
     created: Date.now(),
-    description: 'Description for Ticket 2',
+    description: 'Полить цветы в пятницу на даче',
 });
 
 app.use(cors());

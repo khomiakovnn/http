@@ -1,0 +1,16 @@
+.input_field {
+    margin-bottom: 15px;
+    display: none;
+    flex-direction: column;
+}
+
+.edit_buttons {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.description_title {
+    text-align: left;
+    display: block;
+    text-align: left;
+}
