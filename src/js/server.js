@@ -31,7 +31,7 @@ router.get('/', async (ctx) => {
 
     switch (method) {
         case 'allTickets':
-            ctx.response.body = tickets.map(({ id, name, status, created }) => ({ id, name, status, created }));
+            ctx.response.body = tickets.map(({ id, name, status, created, description }) => ({ id, name, status, created, description }));
             break;
         case 'ticketById':
             const ticket = tickets.find((t) => t.id == id);
@@ -62,6 +62,50 @@ router.post('/', async (ctx) => {
             };
             tickets.push(newTicket);
             ctx.response.body = newTicket;
+            break;
+        default:
+            ctx.response.status = 404;
+            break;
+    }
+});
+
+router.delete('/', async (ctx) => {
+    const { method, id } = ctx.request.query;
+
+    switch (method) {
+        case 'deleteTicket':
+            const indexToDelete = tickets.findIndex((t) => t.id == id);
+            if (indexToDelete !== -1) {
+                const deletedTicket = tickets.splice(indexToDelete, 1);
+                ctx.response.body = deletedTicket[0];
+            } else {
+                ctx.response.status = 404;
+            }
+            break;
+        default:
+            ctx.response.status = 404;
+            break;
+    }
+});
+
+router.put('/', async (ctx) => {
+    const { method, id } = ctx.request.query;
+    const { name, description, status } = ctx.request.body;
+
+    switch (method) {
+        case 'updateTicket':
+            const indexToUpdate = tickets.findIndex((t) => t.id == id);
+            if (indexToUpdate !== -1) {
+                tickets[indexToUpdate] = {
+                    ...tickets[indexToUpdate],
+                    name: name || tickets[indexToUpdate].name,
+                    description: description || tickets[indexToUpdate].description,
+                    status: status !== undefined ? status : tickets[indexToUpdate].status,
+                };
+                ctx.response.body = tickets[indexToUpdate];
+            } else {
+                ctx.response.status = 404;
+            }
             break;
         default:
             ctx.response.status = 404;
