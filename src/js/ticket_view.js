@@ -12,7 +12,7 @@ export default class Ticket_view{
         this.cancelButton.addEventListener('click', () => this.hideContainer())
         this.addButton = document.getElementById('addTicket_button');
         this.addButton.addEventListener('click', () => this.create())
-        this.ticketMarkup = '<input class="checkbox" type="checkbox"><div class="tiket_desription">Ticket description</div><div class="ticket_data">Ticket data</div><button class="edit_button">&#9998;</button><button class="delete_button">X</button>'
+        this.ticketMarkup = '<div class="ticket_in_list"><div class="ticket_in_list_row_1"><input class="checkbox" type="checkbox"><div class="tiket_name"></div><div class="ticket_data"></div><button class="edit_button">&#9998;</button><button class="delete_button">X</button></div><div class="ticket_in_list_row_2"></div></div>'
         this.serverUrl = 'http://localhost:8888';
         this.ticketsContainer = document.querySelector('.tickets_container');
         this.clickAdHandler = this.clickAdHandler.bind(this);
@@ -42,8 +42,10 @@ export default class Ticket_view{
         .catch(error => console.error(`Ошибка при обновлении тикета с id ${this.ticketId}:`, error));
     }
 
-    edit() {
+    edit(name, description) {
         this._makeContainer()
+        this.descriptionShort.value = name;
+        this.descriptionLong.value = description;
         this.modalTitle.textContent = 'Изменить тикет';
         this.inputField.style.display = 'flex';
         this.editWarn.style.display = 'none';
@@ -128,24 +130,33 @@ export default class Ticket_view{
                     ticket.id = data[index].id;
                     ticket.innerHTML = this.ticketMarkup;
                     this.ticketsContainer.appendChild(ticket);
+
+                    const checkboxElement = ticket.querySelector('.checkbox');
+                    const nameElement = ticket.querySelector('.tiket_name');
+                    const dataElement = ticket.querySelector('.ticket_data');
+                    const editElement = ticket.querySelector('.edit_button');
+                    const deleteElement = ticket.querySelector('.delete_button');
+                    const descriptionElement = ticket.querySelector('.ticket_in_list_row_2')                 
+
                     ticket.addEventListener('click', (event) => {
                         const targetElement = event.target;
                         if (!targetElement.matches('.edit_button, .delete_button, .checkbox')) {
-                            console.log('click')
+                            if (descriptionElement.style.display == 'block') {
+                                descriptionElement.style.display = 'none';
+                            } else {
+                                descriptionElement.style.display = 'block';
+                            }
+                            
                         }
                     })
-                    const checkboxElement = ticket.querySelector('.checkbox');
-                    const descriptionElement = ticket.querySelector('.tiket_desription');
-                    const dataElement = ticket.querySelector('.ticket_data');
-                    const editElement = ticket.querySelector('.edit_button');
-                    const deleteElement = ticket.querySelector('.delete_button');                  
-                    
+
                     checkboxElement.checked = data[index].status;
-                    descriptionElement.textContent = data[index].name;
+                    nameElement.textContent = data[index].name;
                     dataElement.textContent = this._convertDate(data[index].created);
+                    descriptionElement.textContent = data[index].description;
                     
                     checkboxElement.addEventListener('click', () => {
-                        this.ticketId = checkboxElement.parentNode.id;
+                        this.ticketId = checkboxElement.parentNode.parentNode.parentNode.id;
                         var updatedData = {
                             status: checkboxElement.checked,
                         };
@@ -161,11 +172,11 @@ export default class Ticket_view{
                     });
 
                     editElement.addEventListener('click', () => {
-                        this.ticketId = editElement.parentNode.id;
-                        this.edit();
+                        this.ticketId = editElement.parentNode.parentNode.parentNode.id;
+                        this.edit(data[index].name, data[index].description);
                     });
                     deleteElement.addEventListener('click', () => {
-                        this.ticketId = deleteElement.parentNode.id;
+                        this.ticketId = deleteElement.parentNode.parentNode.parentNode.id;
                         this.delete();
                     });
                 }

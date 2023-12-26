@@ -5,6 +5,7 @@
     box-sizing: border-box;
     margin: 10px 0 0 0;
     min-height: 40px;
+    position: relative;
 }
 
 .button_container {
