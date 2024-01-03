@@ -1,13 +1,16 @@
 image: Ubuntu1804
 stack: node 14
 
-cache: node_modules
+cache:
+  directories:
+    - node_modules
+
 before_build:
-  - npm install -g webpack
+  - npm install webpack webpack-cli
   - npm install
 
 build_script:
-  - webpack --config webpack.config.js
+  - node_modules/.bin/webpack --config webpack.config.js
 
 artifacts:
   - path: dist
