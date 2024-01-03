@@ -15,7 +15,8 @@ artifacts:
     name: MyProject
 
 deploy:
-  - provider: Script
-    script: npm run deploy
-    on:
-      branch: main
+  provider: Script
+  script: npm run deploy
+  on:
+    branch: main
+
