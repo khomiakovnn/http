@@ -1,9 +1,12 @@
 image: Ubuntu1804
 stack: node 14
 
-cache: node_modules
+cache:
+  directories:
+    - node_modules
+
 before_build:
-  - npm install webpack webpack-cli
+  - npm install webpack@5.89.0 webpack-cli@5.1.4
   - npm install
 
 build_script:
@@ -18,4 +21,3 @@ deploy:
     script: npm run deploy
     on:
       branch: main
-
