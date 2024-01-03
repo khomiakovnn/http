@@ -1,0 +1,19 @@
+image: Ubuntu1804
+stack: node 12
+
+cache: node_modules
+install:
+- npm install
+
+build_script:
+  - webpack --config webpack.config.js
+
+artifacts:
+  - path: dist
+    name: MyProject
+
+deploy:
+  provider: script
+  script: npm run deploy
+  on:
+    branch: main
