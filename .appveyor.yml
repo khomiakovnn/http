@@ -1,9 +1,7 @@
 image: Ubuntu1804
 stack: node 14
 
-cache:
-  directories:
-    - node_modules
+cache: node_modules
 
 before_build:
   - npm install webpack@5.89.0 webpack-cli@5.1.4
