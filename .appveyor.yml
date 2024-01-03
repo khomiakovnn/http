@@ -1,5 +1,5 @@
 image: Ubuntu1804
-stack: node 12
+stack: node 14
 
 cache: node_modules
 install:
